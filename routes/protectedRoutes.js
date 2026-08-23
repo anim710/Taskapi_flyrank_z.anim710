@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middleware/authMiddleware');
 
-// GET /protected/profile -> Protected gate (Stage 2: Returns 401 if no token)
-router.get('/profile', async (req, res) => {
-  const authHeader = req.headers.authorization;
-
-  // Reject if missing Authorization header or Bearer prefix
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Access token required' });
-  }
-
-  // Temporary Stage 2 placeholder before full JWT verification in Stage 3
-  return res.status(200).json({ message: 'Token detected (Unverified for Stage 2)' });
+// GET /protected/profile -> Protected by authenticateToken middleware
+router.get('/profile', authenticateToken, (req, res) => {
+  // Returns user metadata attached by middleware
+  return res.status(200).json({
+    message: 'Profile data retrieved successfully',
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+      created_at: req.user.created_at
+    }
+  });
 });
 
 module.exports = router;
