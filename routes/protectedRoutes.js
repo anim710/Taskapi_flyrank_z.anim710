@@ -2,7 +2,20 @@ const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middleware/authMiddleware');
 
-// GET /protected/profile
+/**
+ * @swagger
+ * /protected/profile:
+ *   get:
+ *     summary: Get profile of authenticated user
+ *     tags: [Protected]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/profile', authenticateToken, (req, res) => {
   return res.status(200).json({
     message: 'Profile data retrieved successfully',
@@ -14,7 +27,20 @@ router.get('/profile', authenticateToken, (req, res) => {
   });
 });
 
-// GET /protected/dashboard -> Reuses authenticateToken middleware
+/**
+ * @swagger
+ * /protected/dashboard:
+ *   get:
+ *     summary: Access authenticated dashboard
+ *     tags: [Protected]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dashboard data
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/dashboard', authenticateToken, (req, res) => {
   return res.status(200).json({
     message: `Welcome to your dashboard, ${req.user.email}!`,

@@ -1,7 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-// GET /public/info -> Publicly accessible route
+/**
+ * @swagger
+ * /public/info:
+ *   get:
+ *     summary: Publicly accessible information
+ *     tags: [Public]
+ *     responses:
+ *       200:
+ *         description: Welcome message
+ */
 router.get('/info', (req, res) => {
   return res.status(200).json({ message: 'Welcome stranger! This info is public.' });
 });
